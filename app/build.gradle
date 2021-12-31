@@ -80,5 +80,24 @@ dependencies {
     implementation "com.google.accompanist:accompanist-insets:$accompanistVersion"
     implementation "com.google.accompanist:accompanist-flowlayout:$accompanistVersion"
 
+    /* Dependency - Retrofit2 */
+    def retrofit_version = "2.9.0"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+
+    /* Dependency - okhttp */
+    def okhttp_version = "4.7.2"
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
+
+    def roomVersion = "2.3.0"
+    implementation("androidx.room:room-runtime:$roomVersion")
+    annotationProcessor("androidx.room:room-compiler:$roomVersion")
+    kapt("androidx.room:room-compiler:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
+
+
+
+
 
 }
