@@ -4,6 +4,8 @@ plugins {
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
 }
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
 android {
     compileSdk 31
@@ -19,6 +21,7 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
+        resValue("string", "SERVICE_KEY", properties.getProperty("service_key"))
     }
 
     buildTypes {

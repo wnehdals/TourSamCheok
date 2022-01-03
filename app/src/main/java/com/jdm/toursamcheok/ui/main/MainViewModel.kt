@@ -9,39 +9,54 @@ import com.jdm.toursamcheok.repository.TourRepository
 import com.jdm.toursamcheok.response.Tour
 import com.jdm.toursamcheok.response.state.BaseState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val tourRepository: TourRepository
 ): ViewModel() {
+    lateinit var serviceKey: String
     private val _selectedTab: MutableState<MainScreenHomeTab> = mutableStateOf(MainScreenHomeTab.TOUR)
     val selectedTab: State<MainScreenHomeTab> get() = _selectedTab
 
     private val _tourRespState: MutableState<BaseState> = mutableStateOf(BaseState.Uninitialized)
     val tourRespState: State<BaseState> get() = _tourRespState
 
+
     val tour: State<MutableList<Tour>> = mutableStateOf(mutableListOf())
-    val tourPageStateFlow: MutableStateFlow<Int> = MutableStateFlow(1)
-    private val newMovieFlow = tourPageStateFlow.flatMapLatest {
+    val tourPageFlow: MutableStateFlow<Int> = MutableStateFlow(1)
+    private val newMovieFlow = tourPageFlow.flatMapLatest {
         _tourRespState.value = BaseState.Loading
         tourRepository.getTourList(
             page = it,
+            serviceKey = serviceKey,
             success = {
-
+                _tourRespState.value = BaseState.Success
             },
             fail = {
-
+                _tourRespState.value = BaseState.Fail
             }
         )
     }.shareIn(viewModelScope, SharingStarted.WhileSubscribed(), replay = 1)
 
 
+    init {
+        viewModelScope.launch(Dispatchers.IO) {
+            newMovieFlow.collect{
+                tour.value.addAll(it)
+            }
+        }
+    }
 
     fun selectTab(tab: MainScreenHomeTab) {
         _selectedTab.value = tab
+    }
+    fun getNextTourPate() {
+        if (tourRespState.value !is BaseState.Loading) {
+            tourPageFlow.value++
+        }
     }
 }

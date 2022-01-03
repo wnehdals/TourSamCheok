@@ -4,6 +4,8 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 data class Tour(
+    var page: Int = 0,
+
     @SerializedName("addr1")
     @Expose
     val address: String = "",

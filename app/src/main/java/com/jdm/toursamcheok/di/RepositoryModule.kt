@@ -1,5 +1,6 @@
 package com.jdm.toursamcheok.di
 
+import com.jdm.toursamcheok.db.TourDao
 import com.jdm.toursamcheok.network.Service.TourService
 import com.jdm.toursamcheok.repository.TourRepository
 import dagger.Module
@@ -15,8 +16,9 @@ object RepositoryModule {
     @Provides
     @ViewModelScoped
     fun provideTourRepository(
-        tourService: TourService
+        tourService: TourService,
+        tourDao: TourDao
     ): TourRepository {
-        return TourRepository(tourService)
+        return TourRepository(tourService, tourDao)
     }
 }

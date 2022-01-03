@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 data class Header(
     @SerializedName("resultCode")
     @Expose
-    val resultCode: String = "unkown",
+    val resultCode: String = "",
 
     @SerializedName("resultMsg")
     @Expose

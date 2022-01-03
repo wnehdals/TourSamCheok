@@ -5,14 +5,8 @@ sealed class BaseState {
 
     object Loading: BaseState()
 
-    data class Error(
-        val error: Throwable
-    ) : BaseState()
+    object Error: BaseState()
 
-    data class Success<T>(
-        val resp: T
-    ): BaseState()
-    data class Fail<T>(
-        val resp: T
-    ): BaseState()
+    object Success: BaseState()
+    object Fail: BaseState()
 }
